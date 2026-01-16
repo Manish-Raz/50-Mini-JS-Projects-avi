@@ -38,7 +38,13 @@ function addTasks() {
 }
 
 // main task add button 
-addBtn.addEventListener("click", (addTasks))
+addBtn.addEventListener("click", (addTasks));
+input.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addTasks();
+  }
+});
 
 // delete button
 tasksContainer.addEventListener("click", (e) => {
