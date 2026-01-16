@@ -9,32 +9,42 @@ let counting = 0
 
 // make a function for adding taskes
 function addTasks() {
-    // show error if there is no input.value
-    if (input.value.trim() === "") {
+   const taskText = input.value.trim();
+       //  Empty input check
+    if (taskText === "") {
+        errorMsg.textContent = "Input cannot be empty!";
         errorMsg.style.display = "block";
-    } else {
-        // else create a task and add it inside the tasks div
-        errorMsg.style.display = "none";
-        let taskDiv = document.createElement("div")
-        taskDiv.classList.add("task")
-
-        taskDiv.innerHTML = `
-        <input type="checkbox" class="task-check">
-        <span>${input.value}</span>
-        <button class="delete-btn">Delete</button>`;
-
-        tasksContainer.appendChild(taskDiv)
-        input.value = ""
-
-        // update the counter
-        counting++;
-        countValue.innerText = counting;
-
-        // to store our data
-        saveTasksToLocalStorage()
-
-
+        return;
     }
+
+    //  Must contain at least one alphabet character
+    const hasLetter = /[a-zA-Z]/.test(taskText);
+    if (!hasLetter) {
+        errorMsg.textContent = "Todo must contain at least one letter!";
+        errorMsg.style.display = "block";
+        return;
+    }
+
+    // ✅ Valid input
+    errorMsg.style.display = "none";
+
+    let taskDiv = document.createElement("div");
+    taskDiv.classList.add("task");
+
+    taskDiv.innerHTML = `
+        <input type="checkbox" class="task-check">
+        <span>${taskText}</span>
+        <button class="delete-btn">Delete</button>
+    `;
+
+    tasksContainer.appendChild(taskDiv);
+    input.value = "";
+
+    // update counter
+    counting++;
+    countValue.innerText = counting;
+
+    saveTasksToLocalStorage();
 }
 
 // main task add button 
@@ -45,6 +55,8 @@ input.addEventListener("keydown", function (event) {
     addTasks();
   }
 });
+
+
 
 // delete button
 tasksContainer.addEventListener("click", (e) => {
